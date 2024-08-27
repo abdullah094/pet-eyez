@@ -1,0 +1,1279 @@
+<style>
+  tr.heading {
+    background: #444446;
+    color: #fff;
+    padding: 15px !important;
+    border-radius: 15px !important;
+    margin-top: 40px !important;
+}
+
+  section#shopify-section-template--17160221032638__contact-form {
+    background: #fff !important;
+}
+
+th {
+    padding: 15px;
+    color: #fff !important;
+    font-size: 18px;
+    opacity: 1;
+}
+
+  .section-header.justify-self-center.text-center {
+    text-align: center !important;
+    position: relative;
+}.section-header.justify-self-center.text-center {}
+
+table#table {
+    margin-top: 40px;
+}
+
+body.features--button-transition.features--zoom-image.page\.faraz {
+    background: #fff !important;
+}
+
+  .prose {
+    text-align: center;
+}
+
+.section-stack {
+    gap: 0 !important;
+    margin-top: 140px;
+}
+
+@media only screen and (max-width: 600px) {
+
+  th {
+        font-size: 10px;
+        text-transform: math-auto;
+        padding-left: 3px !important;
+}
+
+td {
+    padding: 5px;
+    width: 100%;
+}
+
+.section-stack {
+    margin-top: 0;
+}
+
+table#table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+:where(th):not(:empty) {
+    padding: 0;
+}
+
+th:nth-child(4) {
+    width: 89px !important;
+}
+
+td:nth-child(4) {
+    padding: 20px;
+}
+
+  html #shopify-section-template--17179762983102__contact-form input {
+    padding: 8px 15px !important;
+}
+  td {
+    font-size: 10px;
+}
+
+  label.floating-label.text-xs {
+    opacity: 0 !important;
+    display: none;
+}
+}
+  
+</style>
+
+
+<div class="section-spacing {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+  <div class="container container--xs>
+    <div class="section-stack text-center">
+      {%- render 'section-header', subheading: section.settings.subheading, heading: section.settings.title, content: section.settings.content, text_alignment: 'center' -%}
+
+      {%- form 'contact', class: 'form' -%}
+        {%- if form.posted_successfully? -%}
+          {%- assign content = 'contact.form.success_message' | t -%}
+          {%- render 'banner', status: 'success', content: content -%}
+        {%- endif -%}
+
+        {%- if form.errors -%}
+          {%- capture content -%}{{ form.errors.translated_fields[form.errors.first] | capitalize }} {{ form.errors.messages[form.errors.first] }}{%- endcapture -%}
+          {%- render 'banner', status: 'error', content: content -%}
+        {%- endif -%}
+
+        <div class="fieldset">
+          <div class="fieldset-row">
+            {%- assign label  = 'contact.form.wholename' | t -%}
+            {%- render 'input', type: 'text', name: 'contact[name]', label: label, value: customer.name, required: true, autocomplete: 'name' -%}
+          </div>
+           <div class="fieldset-row">
+            {%- assign label  = 'contact.form.phone' | t -%}
+            {%- render 'input', type: 'text', name: 'contact[phone]', label: label, value: customer.phone, required: true, autocomplete: 'name' -%}
+
+            {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'phone' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'cinput', type: 'text', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}          
+           </div>
+          {%- assign label  = 'contact.form.email' | t -%}
+            {%- render 'input', type: 'email', name: 'contact[email]', label: label, value: customer.email, required: true, autocomplete: 'email' -%}
+          {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'text' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'input', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'input', type: 'text', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}
+           <div class="fieldset-row">
+              {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'city' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'city', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'city', type: 'text', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}
+            {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'state' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'state', type: 'text', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}       
+            {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'zip' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'zip', type: 'text', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}          
+           </div>
+          
+          {%- assign label = 'contact.form.message' | t -%}
+           <div id="table-container">
+    <table id="table">
+       <thead>
+      <tr class="heading">
+        <th></th>
+        <th>Item Description</th>
+        <th>Size</th>
+        <th>Case Pack</th>
+        <th>QTY.</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/1_9605a5e3-cfa7-45f5-85fe-4c3232257eb3.png?v=1714801953"></td>
+        <td><span>vitamin <b>Treats</b> BEEF LIVER (DOG)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6</span></td>
+        <td>
+          {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'beef' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'beefdog', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'beefdog', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}      
+      </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/2_52b21ead-c60e-4d66-8253-85b839b2d288.png?v=1714798793"></td>
+        <td><span>vitamin <b>Treats</b> Chicken (DOG)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6</span></td>
+        {%- assign label  = 'contact.form.email' | t -%}
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'chikdog' -%}
+              {%- if block.settings.use_long_text -%}
+                
+                {%- render 'chikdog', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'chikdog', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/3_b10cd6d7-e808-4f94-af74-c44a4ffb271b.png?v=1714798792"></td>
+        <td><span>vitamin <b>Treats</b> Lamb (DOG)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6 </span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'lambdog' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'lampdog', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'lampdog', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/4.png?v=1714798792"></td>
+        <td><span>vitamin <b>Treats</b> Whitefish (DOG)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6 </span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'fishdog' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'fishdog', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'fishdog', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+        <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/5.png?v=1714798792"></td>
+        <td><span>vitamin <b>Treats</b> BEEF LIVER (CAT)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6</span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'beefcat' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'beefcat', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'beefcat', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/6.png?v=1714798794"></td>
+        <td><span>vitamin <b>Treats</b> Chicken (CAT)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6 </span></td>
+        {%- assign label  = 'contact.form.email' | t -%}
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'chikcat' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'chikcat', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'chikcat', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/7.png?v=1714798792"></td>
+        <td><span>vitamin <b>Treats</b> Lamb (CAT)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6 </span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'lambcat' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'lambcat', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'lambcat', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/8.png?v=1714798792"></td>
+        <td><span>vitamin <b>Treats</b> Whitefish (CAT)</span></td>
+        <td><span>1 OZ</span></td>
+        <td><span>6 </span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'fishcat' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'fishcat', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'fishcat', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+            <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/9.png?v=1714798792"></td>
+        <td><span>PETEYEZ DOG DISPLAY ( 21 ASSORTED TREATS )</span></td>
+        <td><span>13x9x6</span></td>
+        <td><span>1</span></td>
+        <td>
+          {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field9' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field9', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field9', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}      
+      </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/9.png?v=1714798792"></td>
+        <td><span>PETEYEZ CAT DISPLAY ( 21 ASSORTED TREATS )</span></td>
+        <td><span>13x9x6</span></td>
+        <td><span>1</span></td>
+        {%- assign label  = 'contact.form.email' | t -%}
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field1' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field1', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field1', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/10.png?v=1714798792"></td>
+        <td><span>PETEYEZ DOG SIDEKICK ( 48 ASSORTED TREATS )</span></td>
+        <td>></td>
+        <td><span>1</span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field2' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field2', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field2', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/10.png?v=1714798792"></td>
+        <td><span>PETEYEZ CAT SIDEKICK ( 48 ASSORTED TREATS )</span></td>
+        <td>></td>
+        <td><span>1</span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field3' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field3', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field3', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+        <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/10.png?v=1714798792"></td>
+        <td><span>PETEYEZ CAT/DOG SIDEKICK ( ASSORTED TREATS )</span></td>
+        <td>></td>
+        <td><span>1</span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field4' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field4', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field4', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/11.png?v=1714798793"></td>
+        <td><span>vitamin <b>Powder</b> Beef (CAT)</span></td>
+        <td><span>120 scoops</span></td>
+        <td><span>8</span></td>
+        {%- assign label  = 'contact.form.email' | t -%}
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field5' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field5', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field5', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/12.png?v=1714798792"></td>
+        <td><span>vitamin <b>Powder</b> Chicken (CAT)</span></td>
+        <td><span>120 sccops</span></td>
+        <td><span>8</span></td>
+        <td>
+        {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'field6' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'field6', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'field6', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+      <tr>
+        <td><img src="https://cdn.shopify.com/s/files/1/0620/5040/2494/files/13.png?v=1714798792"></td>
+        <td><span>PETEYEZ Eye Ear Wipes with HipoChlor</span></td>
+        <td><span>150ML</span></td>
+        <td><span>6</span></td>
+        <td>
+          {%- for block in section.blocks -%}
+            {%- assign field_title = block.settings.title -%}
+
+            {%- if field_title == blank -%}
+              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+            {%- endif -%}
+
+            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+
+            {%- if block.type == 'powder' -%}
+              {%- if block.settings.use_long_text -%}
+                {%- render 'powder', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
+              {%- else -%}
+                {%- render 'powder', type: 'number', name: name, label: block.settings.title, required: block.settings.required -%}
+              {%- endif -%}
+            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
+              {%- assign values = block.settings.values | split: ',' -%}
+              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
+            {%- endif -%}
+          {%- endfor -%}    
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+  
+        {%- assign button_content = 'contact.form.submit' | t -%}
+        <div class="align-self-start">
+        {%- render 'button', content: button_content, type: 'submit' -%}
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact.name",
+  "class": "shopify-section--contact",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "t:global.text.subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Contact"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "t:sections.contact.blocks.text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "beef",
+      "name": "beef",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "phone",
+      "name": "alternative phone",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "city",
+      "name": "city",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "state",
+      "name": "state",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "zip",
+      "name": "zip",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+        {
+      "type": "beefcat",
+      "name": "beef cat qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "fishcat",
+      "name": "fish cat qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "lambcat",
+      "name": "lamb cat qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "chikcat",
+      "name": "chicken cat qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "beefdog",
+      "name": "beef dog qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "fishdog",
+      "name": "fish dog qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "lambdog",
+      "name": "lamb dog qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "chikdog",
+      "name": "chicken dog qty",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+     {
+      "type": "field9",
+      "name": "field9",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "field1",
+      "name": "field1",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "field2",
+      "name": "field2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "field3",
+      "name": "field3",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "field4",
+      "name": "field4",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "field5",
+      "name": "field5",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "field6",
+      "name": "field6",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "powder",
+      "name": "powder",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.text.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "t:sections.contact.blocks.text.use_long_text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.contact.blocks.text.required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "t:sections.contact.blocks.dropdown.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.contact.blocks.dropdown.name_label",
+          "default": "Custom field"
+        },
+        {
+          "type": "text",
+          "id": "values",
+          "label": "t:sections.contact.blocks.dropdown.values",
+          "info": "t:sections.contact.blocks.dropdown.values_info",
+          "default": "value 1, value 2, value 3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact.presets.contact_form.name",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
